@@ -327,15 +327,40 @@ npx @modelcontextprotocol/inspector@latest -e API_KEY=xxx --cli npx -y @your/mcp
 - [ ] Logo URL works (if provided)
 - [ ] `_meta.json` exists for new services
 
+## Supported Package Runners
+
+CI supports all common package runners:
+
+| Command | Runtime | Example |
+|---------|---------|---------|
+| `npx` | Node.js (npm) | `npx -y @scope/package@latest` |
+| `pnpx` | Node.js (pnpm) | `pnpx @scope/package@latest` |
+| `bunx` | Bun | `bunx @scope/package@latest` |
+| `uvx` | Python (uv) | `uvx package-name` |
+| `pipx` | Python | `pipx run package-name` |
+| `docker` | Docker | `docker run --rm -i image:tag` |
+
 ## Common Patterns
 
-### NPX (Node.js packages)
+### NPX (Node.js/npm)
 ```json
 "command": "npx",
 "args": ["-y", "@scope/package@latest"]
 ```
 
-### UVX (Python packages)
+### PNPX (Node.js/pnpm)
+```json
+"command": "pnpx",
+"args": ["@scope/package@latest"]
+```
+
+### Bunx (Bun)
+```json
+"command": "bunx",
+"args": ["@scope/package@latest"]
+```
+
+### UVX (Python/uv)
 ```json
 "command": "uvx",
 "args": ["package-name"]
@@ -345,6 +370,12 @@ npx @modelcontextprotocol/inspector@latest -e API_KEY=xxx --cli npx -y @your/mcp
 ```json
 "command": "uvx",
 "args": ["--from=package-name", "command-name"]
+```
+
+### Pipx (Python)
+```json
+"command": "pipx",
+"args": ["run", "package-name"]
 ```
 
 ### Docker
