@@ -70,6 +70,11 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Setup Python and uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
       - name: Test ${{ matrix.mcp.name }} with MCP Inspector
         continue-on-error: true
         timeout-minutes: 3
