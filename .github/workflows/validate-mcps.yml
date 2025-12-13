@@ -38,7 +38,7 @@ jobs:
       - name: Check for duplicate IDs
         run: |
           echo "Checking for duplicate MCP IDs..."
-          DUPLICATES=$(npm run list-mcps -- --json 2>/dev/null | jq -r '.[].id' | sort | uniq -d)
+          DUPLICATES=$(node scripts/list-mcps.mjs --json | jq -r '.[].id' | sort | uniq -d)
           if [ -n "$DUPLICATES" ]; then
             echo "Error: Duplicate MCP IDs found:"
             echo "$DUPLICATES"
@@ -49,7 +49,7 @@ jobs:
       - name: Find testable MCPs (stdio without required inputs)
         id: find-testable
         run: |
-          MCPS=$(npm run list-mcps -- --json 2>/dev/null | jq -c '[.[] | select(.transport == "stdio")]')
+          MCPS=$(node scripts/list-mcps.mjs --json | jq -c '[.[] | select(.transport == "stdio")]')
           echo "mcps=$MCPS" >> $GITHUB_OUTPUT
 
   test-stdio-mcps:
