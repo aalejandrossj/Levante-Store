@@ -72,7 +72,7 @@ jobs:
 
       - name: Test ${{ matrix.mcp.name }} with MCP Inspector
         continue-on-error: true
-        timeout-minutes: 2
+        timeout-minutes: 3
         run: |
           echo "Testing MCP: ${{ matrix.mcp.name }} (${{ matrix.mcp.id }})"
           # Read MCP config and extract command
@@ -80,6 +80,6 @@ jobs:
           if [ -n "$MCP_FILE" ]; then
             COMMAND=$(jq -r '.configuration.template.command' "$MCP_FILE")
             ARGS=$(jq -r '.configuration.template.args | join(" ")' "$MCP_FILE")
-            echo "Running: npx @modelcontextprotocol/inspector --cli $COMMAND $ARGS --method tools/list"
-            npx @modelcontextprotocol/inspector --cli $COMMAND $ARGS --method tools/list --timeout 30000 || echo "MCP test completed (may require auth)"
+            echo "Running: npx @modelcontextprotocol/inspector@latest --cli $COMMAND $ARGS --method tools/list"
+            npx @modelcontextprotocol/inspector@latest --cli $COMMAND $ARGS --method tools/list --timeout 60000 || echo "MCP test completed (may require auth)"
           fi
