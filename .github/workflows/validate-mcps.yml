@@ -70,24 +70,29 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Pre-install MCP Inspector
-        run: npm install -g @modelcontextprotocol/inspector@latest
+      - name: Clear npx cache and pre-install inspector
+        run: |
+          npx clear-npx-cache || true
+          npm cache clean --force
+          npm install -g @modelcontextprotocol/inspector@latest
 
       - name: Test ${{ matrix.mcp.name }} with MCP Inspector
         continue-on-error: true
         timeout-minutes: 3
+        env:
+          # Ensure PATH includes node binaries for subprocesses
+          PATH: ${{ env.PATH }}:/usr/local/bin
         run: |
           echo "Testing MCP: ${{ matrix.mcp.name }} (${{ matrix.mcp.id }})"
-          # Read MCP config and extract command
           MCP_FILE=$(find src/data/mcps -name "*.json" -exec grep -l '"id": "${{ matrix.mcp.id }}"' {} \; | head -1)
           if [ -n "$MCP_FILE" ]; then
             COMMAND=$(jq -r '.configuration.template.command' "$MCP_FILE")
             ARGS=$(jq -r '.configuration.template.args | join(" ")' "$MCP_FILE")
+
+            echo "Pre-installing MCP package..."
+            # Pre-install the MCP package to avoid npx download issues
+            npx -y $ARGS --version 2>/dev/null || true
+
             echo "Running: mcp-inspector --cli $COMMAND $ARGS --method tools/list"
-            # Retry up to 3 times with increasing delay
-            for i in 1 2 3; do
-              mcp-inspector --cli $COMMAND $ARGS --method tools/list --timeout 60000 && break
-              echo "Attempt $i failed, retrying in ${i}0 seconds..."
-              sleep $((i * 10))
-            done || echo "MCP test completed (may require auth or network issues)"
+            mcp-inspector --cli $COMMAND $ARGS --method tools/list --timeout 60000 || echo "MCP test completed (may require auth)"
           fi
