@@ -1,0 +1,8 @@
+{
+  "service": "docling",
+  "displayName": "Docling",
+  "description": "Document processing and parsing for diverse formats",
+  "website": "https://docling-project.github.io/docling/",
+  "icon": "docling",
+  "category": "documentation"
+}
