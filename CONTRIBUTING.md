@@ -13,7 +13,17 @@ Thank you for your interest in contributing! This guide will help you add new MC
 
 ## Adding a New MCP
 
-### Quick Start
+### Quick Start (Interactive)
+
+The easiest way to add a new MCP:
+
+```bash
+npm run add-mcp
+```
+
+This interactive script will guide you through creating a properly formatted MCP.
+
+### Quick Start (Manual)
 
 1. **Fork** the repository
 2. **Create** or use an existing service folder: `src/data/mcps/[service]/`

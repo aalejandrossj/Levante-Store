@@ -58,6 +58,9 @@ src/
 ## CLI Commands
 
 ```bash
+# Add new MCP (interactive)
+npm run add-mcp
+
 # Validate all MCPs against schema
 npm run validate-mcps
 
