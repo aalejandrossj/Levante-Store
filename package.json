@@ -8,6 +8,7 @@
 		"deploy": "vercel deploy",
 		"test": "vitest run",
 		"test:watch": "vitest",
+		"test:connection": "vitest run --config vitest.connection.config.ts",
 		"typecheck": "tsc --noEmit",
 		"validate-mcps": "node scripts/validate-mcps.mjs",
 		"list-mcps": "node scripts/list-mcps.mjs"
@@ -19,6 +20,7 @@
 	"devDependencies": {
 		"@hono/vite-build": "^1.2.0",
 		"@hono/vite-dev-server": "^0.23.0",
+		"@types/node": "^25.0.2",
 		"ajv": "^8.17.1",
 		"ajv-formats": "^3.0.1",
 		"typescript": "^5.9.3",

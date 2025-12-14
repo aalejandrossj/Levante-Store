@@ -10,6 +10,6 @@ export default defineConfig({
   test: {
     environment: 'node',
     globals: true,
-    exclude: ['**/connection.test.ts', '**/node_modules/**'],
+    include: ['**/connection.test.ts'],
   }
 })
