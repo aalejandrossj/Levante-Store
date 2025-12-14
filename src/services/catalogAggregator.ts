@@ -1,22 +1,16 @@
 import type { MCPServerDescriptor, ServiceMeta, SourceType } from '../types/mcps';
 
-// Import all MCP files statically (Vite/Cloudflare compatible)
-// Documentation MCPs
-import context7 from '../data/mcps/documentation/context7.json';
-import microsoftDocs from '../data/mcps/documentation/microsoft-docs.json';
-import documentationMeta from '../data/mcps/documentation/_meta.json';
+// Cargar dinámicamente todos los archivos JSON de MCPs
+const mcpModules = import.meta.glob<{ default: MCPServerDescriptor }>(
+  '../data/mcps/*/*.json',
+  { eager: true }
+);
 
-// GitHub MCPs
-import githubCopilot from '../data/mcps/github/official-copilot.json';
-import githubMeta from '../data/mcps/github/_meta.json';
-
-// Playwright MCPs
-import playwright from '../data/mcps/playwright/official.json';
-import playwrightMeta from '../data/mcps/playwright/_meta.json';
-
-// Supabase MCPs
-import supabase from '../data/mcps/supabase/official.json';
-import supabaseMeta from '../data/mcps/supabase/_meta.json';
+// Cargar dinámicamente todos los archivos _meta.json
+const metaModules = import.meta.glob<{ default: ServiceMeta }>(
+  '../data/mcps/*/_meta.json',
+  { eager: true }
+);
 
 // Type for service registry
 interface ServiceRegistry {
@@ -24,25 +18,44 @@ interface ServiceRegistry {
   mcps: MCPServerDescriptor[];
 }
 
-// Build registry of all services and their MCPs
-const serviceRegistry: Record<string, ServiceRegistry> = {
-  documentation: {
-    meta: documentationMeta as ServiceMeta,
-    mcps: [context7, microsoftDocs] as MCPServerDescriptor[],
-  },
-  github: {
-    meta: githubMeta as ServiceMeta,
-    mcps: [githubCopilot] as MCPServerDescriptor[],
-  },
-  playwright: {
-    meta: playwrightMeta as ServiceMeta,
-    mcps: [playwright] as MCPServerDescriptor[],
-  },
-  supabase: {
-    meta: supabaseMeta as ServiceMeta,
-    mcps: [supabase] as MCPServerDescriptor[],
-  },
-};
+// Construir el registry dinámicamente
+function buildServiceRegistry(): Record<string, ServiceRegistry> {
+  const registry: Record<string, ServiceRegistry> = {};
+
+  // Primero, cargar todos los _meta.json para crear los servicios
+  for (const [path, module] of Object.entries(metaModules)) {
+    // Extraer nombre del servicio del path: ../data/mcps/[service]/_meta.json
+    const match = path.match(/\/mcps\/([^/]+)\/_meta\.json$/);
+    if (match) {
+      const serviceName = match[1];
+      registry[serviceName] = {
+        meta: module.default,
+        mcps: [],
+      };
+    }
+  }
+
+  // Luego, cargar todos los MCPs y asignarlos a sus servicios
+  for (const [path, module] of Object.entries(mcpModules)) {
+    // Saltar archivos _meta.json y _schema.json
+    if (path.includes('_meta.json') || path.includes('_schema.json')) {
+      continue;
+    }
+
+    // Extraer nombre del servicio del path: ../data/mcps/[service]/[file].json
+    const match = path.match(/\/mcps\/([^/]+)\/[^/]+\.json$/);
+    if (match) {
+      const serviceName = match[1];
+      if (registry[serviceName]) {
+        registry[serviceName].mcps.push(module.default);
+      }
+    }
+  }
+
+  return registry;
+}
+
+const serviceRegistry = buildServiceRegistry();
 
 /**
  * CatalogAggregator - Aggregates MCP files from the folder-based structure

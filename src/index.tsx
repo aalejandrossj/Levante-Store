@@ -5,7 +5,7 @@ import mcps from './routes/mcps'
 import { errorHandler, notFoundHandler } from './middleware/errorHandler'
 import { openApiSpec } from './openapi'
 
-const app = new Hono<{ Bindings: CloudflareBindings }>();
+const app = new Hono();
 
 // CORS global - permite acceso desde cualquier origen
 app.use(
