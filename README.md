@@ -10,13 +10,10 @@ npm install
 
 # Development
 npm run dev
-# Open http://localhost:5173 for Swagger UI
+# Open http://localhost:5180 for Swagger UI
 
 # Build
 npm run build
-
-# Preview (Cloudflare Pages)
-npm run preview
 
 # Deploy
 npm run deploy
@@ -111,7 +108,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add new MCPs.
 ## Tech Stack
 
 - **[Hono](https://hono.dev/)** - Fast web framework
-- **[Cloudflare Pages](https://pages.cloudflare.com/)** - Edge hosting
+- **[Vercel](https://vercel.com/)** - Edge hosting
 - **[TypeScript](https://www.typescriptlang.org/)** - Type safety
 - **[Vite](https://vitejs.dev/)** - Build tool
 - **[@hono/swagger-ui](https://github.com/honojs/middleware/tree/main/packages/swagger-ui)** - API documentation
