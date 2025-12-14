@@ -1,0 +1,29 @@
+{
+  "$schema": "../_schema.json",
+  "id": "sip-cocktails",
+  "name": "SIP Cocktails",
+  "description": "Interactive MCP interface for creating and exploring different types of cocktail recipes",
+  "category": "mcp-ui",
+  "icon": "cocktail",
+  "logoUrl": "https://sip-cocktails.alpic.live/favicon.ico",
+  "source": "community",
+  "maintainer": {
+    "name": "Alpic",
+    "url": "https://sip-cocktails.alpic.live"
+  },
+  "status": "active",
+  "version": "latest",
+  "transport": "streamable-http",
+  "inputs": {},
+  "configuration": {
+    "template": {
+      "type": "streamable-http",
+      "url": "https://sip-cocktails.alpic.live/mcp"
+    }
+  },
+  "metadata": {
+    "homepage": "https://sip-cocktails.alpic.live",
+    "addedAt": "2025-12-14",
+    "lastUpdated": "2025-12-14"
+  }
+}
