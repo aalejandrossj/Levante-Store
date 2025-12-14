@@ -5,7 +5,7 @@
   "description": "Execute SQL queries, manage database schema, and interact with Supabase projects using natural language",
   "category": "database",
   "icon": "database",
-  "logoUrl": "https://supabase.com/brand-assets/supabase-logo-icon.png",
+  "logoUrl": "https://cdn.brandfetch.io/idsSceG8fK/w/436/h/449/theme/dark/symbol.png?c=1bxid64Mup7aczewSAYMX&t=1668081497517",
   "source": "official",
   "maintainer": {
     "name": "Supabase",
@@ -40,7 +40,6 @@
   },
   "metadata": {
     "homepage": "https://supabase.com/docs/guides/getting-started/mcp",
-    "repository": "https://github.com/supabase/mcp",
     "addedAt": "2025-01-01",
     "lastUpdated": "2025-12-14"
   }
