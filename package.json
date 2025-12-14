@@ -4,7 +4,7 @@
 	"scripts": {
 		"dev": "vite --port 5180",
 		"vercel:dev": "vercel dev",
-		"build": "vercel build",
+		"build": "vite build",
 		"deploy": "vercel deploy",
 		"test": "vitest run",
 		"test:watch": "vitest",
