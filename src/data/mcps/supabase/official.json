@@ -2,7 +2,7 @@
   "$schema": "../_schema.json",
   "id": "supabase",
   "name": "Supabase",
-  "description": "Access Supabase database and API through MCP",
+  "description": "Execute SQL queries, manage database schema, and interact with Supabase projects using natural language",
   "category": "database",
   "icon": "database",
   "logoUrl": "https://supabase.com/brand-assets/supabase-logo-icon.png",
@@ -16,17 +16,17 @@
   "version": "1.0.0",
   "transport": "streamable-http",
   "inputs": {
-    "SUPABASE_PROJECT_REF": {
-      "label": "Supabase Project Reference",
-      "required": true,
-      "type": "string",
-      "description": "Your Supabase project reference ID (found in project settings)"
-    },
     "SUPABASE_ACCESS_TOKEN": {
       "label": "Supabase Access Token",
       "required": true,
       "type": "password",
-      "description": "Your Supabase access token for authentication"
+      "description": "Personal access token from supabase.com/dashboard/account/tokens"
+    },
+    "SUPABASE_PROJECT_REF": {
+      "label": "Project Reference",
+      "required": false,
+      "type": "string",
+      "description": "Scope access to a specific project (optional, found in project settings URL)"
     }
   },
   "configuration": {
@@ -39,9 +39,9 @@
     }
   },
   "metadata": {
-    "homepage": "https://supabase.com/docs/guides/ai/mcp",
+    "homepage": "https://supabase.com/docs/guides/getting-started/mcp",
     "repository": "https://github.com/supabase/mcp",
     "addedAt": "2025-01-01",
-    "lastUpdated": "2025-01-01"
+    "lastUpdated": "2025-12-14"
   }
 }
