@@ -2,19 +2,30 @@
 	"name": "levante-store",
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
-		"build": "vite build",
-		"preview": "vite build && wrangler pages dev",
-		"deploy": "npm run build && wrangler pages deploy",
-		"cf-typegen": "wrangler types --env-interface CloudflareBindings"
+		"dev": "vite --port 5180",
+		"vercel:dev": "vercel dev",
+		"build": "vercel build",
+		"deploy": "vercel deploy",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:connection": "vitest run --config vitest.connection.config.ts",
+		"typecheck": "tsc --noEmit",
+		"validate-mcps": "node scripts/validate-mcps.mjs",
+		"list-mcps": "node scripts/list-mcps.mjs"
 	},
 	"dependencies": {
+		"@hono/swagger-ui": "^0.5.2",
 		"hono": "^4.10.8"
 	},
 	"devDependencies": {
 		"@hono/vite-build": "^1.2.0",
-		"@hono/vite-dev-server": "^0.18.2",
-		"vite": "^6.3.5",
+		"@hono/vite-dev-server": "^0.23.0",
+		"@types/node": "^25.0.2",
+		"ajv": "^8.17.1",
+		"ajv-formats": "^3.0.1",
+		"typescript": "^5.9.3",
+		"vite": "^7.2.7",
+		"vitest": "^4.0.15",
 		"wrangler": "^4.54.0"
 	}
 }

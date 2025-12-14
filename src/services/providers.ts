@@ -4,8 +4,7 @@ import type {
     AitemplResponse,
 } from '../types/mcps';
 import { normalizeAitempl } from './normalizers/aitempl';
-import { normalizeLevante } from './normalizers/levante';
-import mcpsDataJson from '../data/mcps.json';
+import { catalogAggregator } from './catalogAggregator';
 import providersConfig from '../data/providers.json';
 
 /**
@@ -79,12 +78,11 @@ export class MCPProviderService {
     }
 
     /**
-     * Obtiene desde proveedor local (archivo estático)
+     * Obtiene desde proveedor local (carga dinámica desde carpetas)
      */
     private async fetchFromLocal(provider: ProviderConfig): Promise<MCPServerDescriptor[]> {
-        // En el caso de Levante, usar el archivo mcps.json existente
         if (provider.id === 'levante') {
-            return normalizeLevante(mcpsDataJson, provider.id);
+            return catalogAggregator.aggregateAll();
         }
 
         throw new Error(`Local provider ${provider.id} not implemented`);

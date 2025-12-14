@@ -1,0 +1,35 @@
+{
+  "$schema": "../_schema.json",
+  "id": "docling",
+  "name": "Docling",
+  "description": "Document processing and parsing for diverse formats (PDF, DOCX, PPTX, HTML, etc.)",
+  "category": "documentation",
+  "icon": "docling",
+  "logoUrl": "https://docling-project.github.io/docling/assets/logo.png",
+  "source": "official",
+  "maintainer": {
+    "name": "Docling Project",
+    "url": "https://docling-project.github.io/docling/",
+    "github": "docling-project"
+  },
+  "status": "active",
+  "version": "latest",
+  "transport": "stdio",
+  "inputs": {},
+  "configuration": {
+    "template": {
+      "command": "uvx",
+      "args": [
+        "--from=docling-mcp",
+        "docling-mcp-server"
+      ],
+      "env": {}
+    }
+  },
+  "metadata": {
+    "homepage": "https://docling-project.github.io/docling/usage/mcp/",
+    "repository": "https://github.com/docling-project/docling",
+    "addedAt": "2025-12-13",
+    "lastUpdated": "2025-12-13"
+  }
+}

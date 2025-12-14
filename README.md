@@ -1,116 +1,140 @@
-# 🏪 Levante MCP Store
+# Levante MCP Store
 
 API RESTful para exponer un catálogo de servidores MCP (Model Context Protocol) consumible por [Levante](https://github.com/levante-hub/levante).
 
-## 🚀 Inicio Rápido
+## Quick Start
 
 ```bash
-# Instalar dependencias
+# Install dependencies
 npm install
 
-# Desarrollo
+# Development
 npm run dev
-# ➜ http://localhost:5173/api/mcps.json
+# Open http://localhost:5173 for Swagger UI
 
 # Build
 npm run build
 
-# Preview local (Cloudflare Pages)
+# Preview (Cloudflare Pages)
 npm run preview
 
-# Deploy a Cloudflare Pages
+# Deploy
 npm run deploy
 ```
 
-## 📡 Endpoints
+## API Endpoints
 
-- `GET /api/mcps.json` - Catálogo completo de servidores MCP
-- `GET /api/mcps/:id` - Servidor específico por ID
-- `GET /api/mcps` - Alias que redirige a `/mcps.json`
+| Endpoint | Description |
+|----------|-------------|
+| `GET /` | Swagger UI documentation |
+| `GET /openapi.json` | OpenAPI 3.0 specification |
+| `GET /api/mcps.json` | Full MCP catalog |
+| `GET /api/mcps.json?source=official` | Filter by source (official/community) |
+| `GET /api/mcps/:id` | Get MCP by ID |
+| `GET /api/mcps/services` | List all services |
+| `GET /api/mcps/service/:service` | MCPs from a specific service |
+| `GET /api/mcps/stats` | Catalog statistics |
 
-## 🧪 Testing
+## Project Structure
 
-```bash
-# Probar todos los endpoints
-./test-api.sh
-
-# Probar contra producción
-./test-api.sh https://tu-dominio.pages.dev
+```
+src/
+├── data/mcps/              # MCP catalog
+│   ├── _schema.json        # JSON Schema for validation
+│   ├── documentation/      # Documentation MCPs
+│   │   ├── _meta.json
+│   │   ├── context7.json
+│   │   └── microsoft-docs.json
+│   ├── github/
+│   ├── playwright/
+│   └── supabase/
+├── services/
+│   └── catalogAggregator.ts
+├── routes/
+│   └── mcps.ts
+└── index.tsx
 ```
 
-## 📚 Documentación
+## CLI Commands
 
-- **[API.md](./API.md)** - Documentación completa de la API
-- **[IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md)** - Resumen de implementación
-- **[levante_mcp_registry.md](./levante_mcp_registry.md)** - Arquitectura de referencia
+```bash
+# Validate all MCPs against schema
+npm run validate-mcps
 
-## 🏗️ Stack Tecnológico
+# List MCPs
+npm run list-mcps
 
-- **[Hono](https://hono.dev/)** - Framework web ultrarrápido
-- **[Cloudflare Pages](https://pages.cloudflare.com/)** - Hosting y edge computing
+# Filter by source
+npm run list-mcps -- --source=official
+
+# Filter by service
+npm run list-mcps -- --service=github
+
+# Output as JSON
+npm run list-mcps -- --json
+```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add new MCPs.
+
+### Quick Guide
+
+1. Fork the repository
+2. Create/use a service folder: `src/data/mcps/[service]/`
+3. Add your MCP: `[name].json`
+4. Validate: `npm run validate-mcps`
+5. Open a PR
+
+### MCP Types
+
+- **Official**: `official.json` - MCPs from service providers
+- **Community**: `community-[name].json` - Third-party MCPs
+
+### Transport Types
+
+| Transport | Description |
+|-----------|-------------|
+| `stdio` | Command-line MCPs (local execution) |
+| `sse` | Server-Sent Events (HTTP streaming) |
+| `streamable-http` | HTTP with bidirectional streaming |
+
+## Current Catalog
+
+| Service | MCPs | Transport |
+|---------|------|-----------|
+| Documentation | Context7, Microsoft Docs | stdio, streamable-http |
+| GitHub | GitHub Copilot MCP | streamable-http |
+| Playwright | Playwright | stdio |
+| Supabase | Supabase | streamable-http |
+
+## Tech Stack
+
+- **[Hono](https://hono.dev/)** - Fast web framework
+- **[Cloudflare Pages](https://pages.cloudflare.com/)** - Edge hosting
 - **[TypeScript](https://www.typescriptlang.org/)** - Type safety
 - **[Vite](https://vitejs.dev/)** - Build tool
+- **[@hono/swagger-ui](https://github.com/honojs/middleware/tree/main/packages/swagger-ui)** - API documentation
 
-## 🔌 Integración con Levante
+## Integration with Levante
 
-Para consumir esta API desde Levante, añade en `src/renderer/data/mcpProviders.json`:
+Add to `src/renderer/data/mcpProviders.json`:
 
 ```json
 {
-  "id": "saul-store",
-  "name": "Saúl MCP Store",
+  "id": "levante-store",
+  "name": "Levante MCP Store",
   "type": "api",
-  "endpoint": "https://tu-dominio.pages.dev/api/mcps.json",
+  "endpoint": "https://your-domain.pages.dev/api/mcps.json",
   "enabled": true
 }
 ```
 
-## 📝 Agregar Nuevos Servidores
+## Documentation
 
-Edita `src/data/mcps.json` y añade un nuevo servidor:
+- [CONTRIBUTING.md](./CONTRIBUTING.md) - How to contribute
+- [docs/PRD-catalog-reorganization.md](./docs/PRD-catalog-reorganization.md) - Architecture decisions
 
-```json
-{
-  "id": "nuevo-server",
-  "name": "Nuevo Server",
-  "description": "Descripción",
-  "category": "development",
-  "icon": "server",
-  "logoUrl": "https://...",
-  "transport": "stdio",
-  "command": "npx",
-  "args": ["-y", "@namespace/mcp-server"],
-  "env": {
-    "API_KEY": {
-      "label": "API Key",
-      "required": true,
-      "type": "string"
-    }
-  }
-}
-```
-
-## 🔧 Configuración Cloudflare
-
-```bash
-# Generar/sincronizar types de Worker
-npm run cf-typegen
-```
-
-Para usar bindings de Cloudflare, pasa `CloudflareBindings` como genérico:
-
-```ts
-const app = new Hono<{ Bindings: CloudflareBindings }>()
-```
-
-## 📦 Catálogo Actual
-
-- 📚 **Context7** - Documentación y ejemplos de librerías
-- 🐙 **GitHub Copilot MCP** - Acceso a repos GitHub vía API MCP
-- 🌐 **Playwright** - Automatización de navegador y testing
-- 📘 **Microsoft Docs** - Documentación técnica de Microsoft Learn
-- 🟩 **Supabase** - Acceso a proyectos y APIs de Supabase
-
-## 📄 Licencia
+## License
 
 MIT
