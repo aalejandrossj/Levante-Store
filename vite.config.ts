@@ -4,7 +4,7 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   plugins: [
-    devServer({
+    !process.env.VITEST && devServer({
       entry: 'src/index.tsx'
     }),
     build({
