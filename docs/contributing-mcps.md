@@ -164,17 +164,17 @@ This guide helps you (or your AI assistant) add new MCPs to the catalog.
 
 ### Example 4: Streamable HTTP MCP
 
-**Remote MCP Server** - HTTP-based transport:
+**Remote MCP Server** - HTTP-based transport with optional parameters:
 
 ```json
 {
   "$schema": "../_schema.json",
   "id": "supabase",
   "name": "Supabase",
-  "description": "Manage Supabase projects and databases",
+  "description": "Execute SQL queries, manage database schema, and interact with Supabase projects",
   "category": "database",
-  "icon": "supabase",
-  "logoUrl": "https://supabase.com/favicon/favicon-196x196.png",
+  "icon": "database",
+  "logoUrl": "https://cdn.brandfetch.io/idsSceG8fK/w/436/h/449/theme/dark/symbol.png",
   "source": "official",
   "maintainer": {
     "name": "Supabase",
@@ -182,28 +182,33 @@ This guide helps you (or your AI assistant) add new MCPs to the catalog.
     "github": "supabase"
   },
   "status": "active",
-  "version": "latest",
+  "version": "1.0.0",
   "transport": "streamable-http",
   "inputs": {
-    "ACCESS_TOKEN": {
-      "label": "Access Token",
+    "SUPABASE_ACCESS_TOKEN": {
+      "label": "Supabase Access Token",
       "required": true,
       "type": "password",
-      "description": "Supabase access token"
+      "description": "Personal access token from supabase.com/dashboard/account/tokens"
+    },
+    "SUPABASE_PROJECT_REF": {
+      "label": "Project Reference",
+      "required": false,
+      "type": "string",
+      "description": "Scope access to a specific project (optional)"
     }
   },
   "configuration": {
     "template": {
       "type": "streamable-http",
-      "url": "https://mcp.supabase.com/",
+      "url": "https://mcp.supabase.com/mcp?project_ref=${SUPABASE_PROJECT_REF}",
       "headers": {
-        "Authorization": "Bearer ${ACCESS_TOKEN}"
+        "Authorization": "Bearer ${SUPABASE_ACCESS_TOKEN}"
       }
     }
   },
   "metadata": {
     "homepage": "https://supabase.com/docs/guides/getting-started/mcp",
-    "repository": "https://github.com/supabase/mcp",
     "addedAt": "2025-01-01",
     "lastUpdated": "2025-01-01"
   }
@@ -220,7 +225,7 @@ This guide helps you (or your AI assistant) add new MCPs to the catalog.
 | `id` | string | Unique ID: lowercase, alphanumeric, hyphens only |
 | `name` | string | Display name (capitalized) |
 | `description` | string | What the MCP does |
-| `category` | enum | `documentation`, `development`, `database`, `automation`, `ai`, `communication`, `productivity`, `other` |
+| `category` | enum | `documentation`, `development`, `database`, `automation`, `ai`, `communication`, `productivity`, `mcp-ui`, `other` |
 | `source` | enum | `official` (by provider) or `community` (third-party) |
 | `transport` | enum | `stdio`, `sse`, or `streamable-http` |
 | `configuration` | object | How to run/connect to the MCP |
@@ -288,6 +293,20 @@ This guide helps you (or your AI assistant) add new MCPs to the catalog.
 Types: `string`, `password`, `number`, `boolean`
 
 ## Naming Conventions
+
+### Display Names
+
+Since MCPs are grouped by service, **don't repeat the service name** in the `name` field:
+
+| Service | Bad | Good |
+|---------|-----|------|
+| cloudflare | "Cloudflare Workers" | "Workers" |
+| cloudflare | "Cloudflare AI Gateway" | "AI Gateway" |
+| supabase | "Supabase Database" | "Database" |
+
+Exception: If the service only has one MCP, using the service name is fine (e.g., "Supabase", "Playwright").
+
+### File Names and IDs
 
 | Source | File Name | ID Pattern |
 |--------|-----------|------------|
