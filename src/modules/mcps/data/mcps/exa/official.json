@@ -1,0 +1,44 @@
+{
+  "$schema": "../_schema.json",
+  "id": "exa",
+  "name": "Exa",
+  "description": "Real-time web search, code context retrieval, and research tools powered by Exa AI",
+  "category": "ai",
+  "icon": "exa",
+  "logoUrl": "https://mintcdn.com/exa-52/tmzyKnsgpKLGddKC/logo/light.png?fit=max&auto=format&n=tmzyKnsgpKLGddKC&q=85&s=e5b3b96736e32f78c816a3ceca13aefa",
+  "source": "official",
+  "maintainer": {
+    "name": "Exa",
+    "url": "https://exa.ai",
+    "github": "exa-labs"
+  },
+  "status": "active",
+  "version": "latest",
+  "transport": "stdio",
+  "auth": {
+    "type": "api-key"
+  },
+  "inputs": {
+    "EXA_API_KEY": {
+      "label": "Exa API Key",
+      "required": false,
+      "type": "password",
+      "description": "Your Exa API key from https://dashboard.exa.ai/api-keys"
+    }
+  },
+  "configuration": {
+    "template": {
+      "command": "npx",
+      "args": ["-y", "exa-mcp-server@latest"],
+      "env": {
+        "EXA_API_KEY": "${EXA_API_KEY}"
+      }
+    }
+  },
+  "metadata": {
+    "homepage": "https://docs.exa.ai/reference/exa-mcp",
+    "repository": "https://github.com/exa-labs/exa-mcp-server",
+    "addedAt": "2025-12-17",
+    "lastUpdated": "2025-12-17"
+  }
+}
