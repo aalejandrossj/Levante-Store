@@ -77,6 +77,22 @@
       "enum": ["stdio", "sse", "streamable-http"],
       "description": "Transport protocol used by the MCP"
     },
+    "auth": {
+      "type": "object",
+      "description": "Authentication requirements for the MCP",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["oauth", "api-key", "none"],
+          "description": "Type of authentication required"
+        },
+        "note": {
+          "type": "string",
+          "description": "Security note explaining how authentication works (e.g., that OAuth tokens are stored locally and not shared)"
+        }
+      },
+      "required": ["type"]
+    },
     "inputs": {
       "type": "object",
       "additionalProperties": {

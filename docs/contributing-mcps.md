@@ -162,9 +162,9 @@ This guide helps you (or your AI assistant) add new MCPs to the catalog.
 }
 ```
 
-### Example 4: Streamable HTTP MCP
+### Example 4: Streamable HTTP MCP with API Key
 
-**Remote MCP Server** - HTTP-based transport with optional parameters:
+**Remote MCP Server** - HTTP-based transport with token authentication:
 
 ```json
 {
@@ -184,6 +184,9 @@ This guide helps you (or your AI assistant) add new MCPs to the catalog.
   "status": "active",
   "version": "1.0.0",
   "transport": "streamable-http",
+  "auth": {
+    "type": "api-key"
+  },
   "inputs": {
     "SUPABASE_ACCESS_TOKEN": {
       "label": "Supabase Access Token",
@@ -215,6 +218,49 @@ This guide helps you (or your AI assistant) add new MCPs to the catalog.
 }
 ```
 
+### Example 5: Streamable HTTP MCP with OAuth
+
+**Remote MCP with OAuth** - Authentication handled automatically via browser flow:
+
+```json
+{
+  "$schema": "../_schema.json",
+  "id": "linear",
+  "name": "Linear",
+  "description": "Find, create, and update issues, projects, and comments in Linear",
+  "category": "productivity",
+  "icon": "linear",
+  "logoUrl": "https://linear.app/static/apple-touch-icon.png",
+  "source": "official",
+  "maintainer": {
+    "name": "Linear",
+    "url": "https://linear.app",
+    "github": "linear"
+  },
+  "status": "active",
+  "version": "latest",
+  "transport": "streamable-http",
+  "auth": {
+    "type": "oauth",
+    "note": "Uses OAuth 2.1 with browser-based login. Tokens are stored locally on your machine and never shared with third parties."
+  },
+  "inputs": {},
+  "configuration": {
+    "template": {
+      "type": "streamable-http",
+      "url": "https://mcp.linear.app/mcp"
+    }
+  },
+  "metadata": {
+    "homepage": "https://linear.app/docs/mcp",
+    "addedAt": "2025-01-01",
+    "lastUpdated": "2025-01-01"
+  }
+}
+```
+
+**Important:** For OAuth MCPs, the `note` field should reassure users that authentication is local and secure.
+
 ## Field Reference
 
 ### Required Fields
@@ -239,6 +285,7 @@ This guide helps you (or your AI assistant) add new MCPs to the catalog.
 | `maintainer` | object | `{ name, url?, github? }` |
 | `status` | enum | `active`, `deprecated`, `experimental` |
 | `version` | string | Version or `"latest"` |
+| `auth` | object | Authentication info `{ type, note? }` - see [Authentication](#authentication) |
 | `inputs` | object | User credentials/config needed |
 | `metadata` | object | `{ homepage?, repository?, addedAt?, lastUpdated? }` |
 
@@ -315,6 +362,33 @@ Valid categories are defined in [`src/modules/mcps/data/mcps/_schema.json`](../s
 ```
 
 Types: `string`, `password`, `number`, `boolean`
+
+### Authentication
+
+The `auth` field describes how the MCP handles authentication. This helps users understand what to expect when connecting.
+
+| Type | When to use |
+|------|-------------|
+| `oauth` | MCP uses OAuth flow (browser login). User authorizes via their browser. |
+| `api-key` | User provides an API key or token manually via `inputs`. |
+| `none` | No authentication required. |
+
+**OAuth Security Note:**
+
+For MCPs using OAuth, include a `note` explaining that authentication is secure and local:
+
+```json
+"auth": {
+  "type": "oauth",
+  "note": "Uses OAuth 2.1 with browser-based login. Tokens are stored locally on your machine and never shared with third parties."
+}
+```
+
+This reassures users that:
+- They authenticate directly with the service (e.g., Linear, GitHub)
+- Tokens are stored **locally** on their machine
+- No credentials are sent to third-party servers
+- Only their local MCP client accesses the service
 
 ## Naming Conventions
 
