@@ -225,7 +225,7 @@ This guide helps you (or your AI assistant) add new MCPs to the catalog.
 | `id` | string | Unique ID: lowercase, alphanumeric, hyphens only |
 | `name` | string | Display name (capitalized) |
 | `description` | string | What the MCP does |
-| `category` | enum | `documentation`, `development`, `database`, `automation`, `ai`, `communication`, `productivity`, `mcp-ui`, `other` |
+| `category` | enum | See [Categories](#categories) section below |
 | `source` | enum | `official` (by provider) or `community` (third-party) |
 | `transport` | enum | `stdio`, `sse`, or `streamable-http` |
 | `configuration` | object | How to run/connect to the MCP |
@@ -241,6 +241,30 @@ This guide helps you (or your AI assistant) add new MCPs to the catalog.
 | `version` | string | Version or `"latest"` |
 | `inputs` | object | User credentials/config needed |
 | `metadata` | object | `{ homepage?, repository?, addedAt?, lastUpdated? }` |
+
+### Categories
+
+Valid categories are defined in [`src/modules/mcps/data/mcps/_schema.json`](../src/modules/mcps/data/mcps/_schema.json).
+
+| Category | Use for |
+|----------|---------|
+| `documentation` | Docs, knowledge bases, reference materials |
+| `development` | Dev tools, CI/CD, cloud platforms, APIs |
+| `database` | Databases, data storage, query tools |
+| `automation` | Browser automation, workflows, scripts |
+| `ai` | AI/ML services, model providers |
+| `communication` | Chat, email, notifications |
+| `productivity` | Notes, calendars, task management |
+| `mcp-ui` | MCPs with visual UI components |
+| `other` | Doesn't fit other categories |
+
+**How to choose:**
+
+1. Check existing MCPs in similar services for consistency
+2. Pick the **primary purpose** - if an MCP does multiple things, choose what it mainly does
+3. Use `development` for general cloud/platform tools (AWS, Cloudflare, Vercel)
+4. Use `other` only as last resort
+5. **Don't create new categories** - if none fit well, open an issue to discuss
 
 ### Configuration Templates
 
