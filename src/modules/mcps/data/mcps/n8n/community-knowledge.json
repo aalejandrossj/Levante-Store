@@ -1,0 +1,58 @@
+{
+  "$schema": "../_schema.json",
+  "id": "n8n-knowledge",
+  "name": "n8n Knowledge Base",
+  "description": "AI-powered knowledge base with 543 n8n nodes, 2,709 workflow templates, and comprehensive documentation to help build workflows",
+  "category": "automation",
+  "icon": "n8n",
+  "logoUrl": "https://n8n.io/favicon.ico",
+  "source": "community",
+  "maintainer": {
+    "name": "czlonkowski",
+    "url": "https://github.com/czlonkowski/n8n-mcp",
+    "github": "czlonkowski"
+  },
+  "status": "active",
+  "version": "latest",
+  "transport": "stdio",
+  "auth": {
+    "type": "none",
+    "note": "No authentication required for knowledge base queries. Optional n8n API integration available via environment variables."
+  },
+  "inputs": {
+    "N8N_API_URL": {
+      "label": "n8n API URL (Optional)",
+      "required": false,
+      "type": "string",
+      "description": "Your n8n instance URL for workflow management features (e.g., https://your-instance.app.n8n.cloud)"
+    },
+    "N8N_API_KEY": {
+      "label": "n8n API Key (Optional)",
+      "required": false,
+      "type": "password",
+      "description": "API key for authenticating with your n8n instance"
+    }
+  },
+  "configuration": {
+    "template": {
+      "command": "npx",
+      "args": [
+        "n8n-mcp"
+      ],
+      "env": {
+        "MCP_MODE": "stdio",
+        "LOG_LEVEL": "error",
+        "DISABLE_CONSOLE_OUTPUT": "true",
+        "N8N_API_URL": "${N8N_API_URL}",
+        "N8N_API_KEY": "${N8N_API_KEY}"
+      }
+    }
+  },
+  "metadata": {
+    "homepage": "https://github.com/czlonkowski/n8n-mcp",
+    "repository": "https://github.com/czlonkowski/n8n-mcp",
+    "author": "czlonkowski",
+    "addedAt": "2025-12-19",
+    "lastUpdated": "2025-12-19"
+  }
+}
