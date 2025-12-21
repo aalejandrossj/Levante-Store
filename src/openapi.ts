@@ -47,6 +47,10 @@ Each MCP includes configuration templates for different transport types (stdio, 
       name: 'Statistics',
       description: 'Catalog statistics',
     },
+    {
+      name: 'Announcements',
+      description: 'Announcements operations',
+    },
   ],
   paths: {
     '/mcps.json': {
@@ -214,6 +218,74 @@ Each MCP includes configuration templates for different transport types (stdio, 
               'application/json': {
                 schema: {
                   $ref: '#/components/schemas/Stats',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    '/announcements': {
+      get: {
+        tags: ['Announcements'],
+        summary: 'Get latest announcement(s) by category',
+        description: 'Returns the latest announcement(s) filtered by one or more categories. For a single category, returns one announcement. For multiple categories (comma-separated), returns an array of announcements.',
+        operationId: 'getAnnouncements',
+        parameters: [
+          {
+            name: 'category',
+            in: 'query',
+            description: 'Category or comma-separated categories to filter announcements',
+            required: true,
+            schema: {
+              type: 'string',
+            },
+            examples: {
+              single: {
+                value: 'announcement',
+                summary: 'Single category',
+              },
+              multiple: {
+                value: 'announcement,privacy,landing',
+                summary: 'Multiple categories',
+              },
+            },
+          },
+        ],
+        responses: {
+          '200': {
+            description: 'Successful response',
+            content: {
+              'application/json': {
+                schema: {
+                  oneOf: [
+                    {
+                      $ref: '#/components/schemas/AnnouncementResponse',
+                    },
+                    {
+                      $ref: '#/components/schemas/AnnouncementsResponse',
+                    },
+                  ],
+                },
+              },
+            },
+          },
+          '400': {
+            description: 'Bad request - missing or invalid category',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+          '500': {
+            description: 'Internal server error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/Error',
                 },
               },
             },
@@ -479,6 +551,77 @@ Each MCP includes configuration templates for different transport types (stdio, 
           id: {
             type: 'string',
             example: 'unknown-mcp',
+          },
+        },
+      },
+      Announcement: {
+        type: 'object',
+        required: ['id', 'title', 'full_text', 'category', 'created_at'],
+        properties: {
+          id: {
+            type: 'string',
+            format: 'uuid',
+            description: 'Unique identifier',
+            example: '123e4567-e89b-12d3-a456-426614174000',
+          },
+          title: {
+            type: 'string',
+            description: 'Announcement title',
+            example: 'New Feature Released',
+          },
+          full_text: {
+            type: 'string',
+            description: 'Full announcement text',
+            example: 'We are excited to announce the release of our new feature...',
+          },
+          category: {
+            type: 'string',
+            enum: ['announcement', 'privacy', 'landing', 'all'],
+            description: 'Announcement category',
+            example: 'announcement',
+          },
+          created_at: {
+            type: 'string',
+            format: 'date-time',
+            description: 'Creation timestamp',
+            example: '2025-12-21T15:30:00Z',
+          },
+        },
+      },
+      AnnouncementResponse: {
+        type: 'object',
+        description: 'Response for single category query',
+        required: ['announcement'],
+        properties: {
+          announcement: {
+            oneOf: [
+              {
+                $ref: '#/components/schemas/Announcement',
+              },
+              {
+                type: 'null',
+              },
+            ],
+            description: 'The latest announcement for the requested category, or null if none found',
+          },
+        },
+      },
+      AnnouncementsResponse: {
+        type: 'object',
+        description: 'Response for multiple categories query',
+        required: ['announcements', 'total'],
+        properties: {
+          announcements: {
+            type: 'array',
+            items: {
+              $ref: '#/components/schemas/Announcement',
+            },
+            description: 'Array of latest announcements for each requested category',
+          },
+          total: {
+            type: 'integer',
+            description: 'Number of announcements returned',
+            example: 2,
           },
         },
       },

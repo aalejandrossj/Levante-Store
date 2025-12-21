@@ -16,6 +16,8 @@
 	},
 	"dependencies": {
 		"@hono/swagger-ui": "^0.5.2",
+		"@supabase/supabase-js": "^2.47.11",
+		"dotenv": "^17.2.3",
 		"hono": "^4.10.8"
 	},
 	"devDependencies": {
