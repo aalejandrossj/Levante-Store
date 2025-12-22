@@ -1,7 +1,9 @@
+import 'dotenv/config'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { swaggerUI } from '@hono/swagger-ui'
 import mcpsModule from '@/modules/mcps/routes'
+import announcementsModule from '@/modules/announcements/routes'
 import { errorHandler, notFoundHandler } from '@/shared/middleware/errorHandler'
 import { openApiSpec } from '@/openapi'
 
@@ -31,6 +33,7 @@ app.use('*', errorHandler);
 
 // Montar rutas de API
 app.route('/api', mcpsModule);
+app.route('/api', announcementsModule);
 
 // OpenAPI spec endpoint
 app.get('/openapi.json', (c) => {
